@@ -29,20 +29,9 @@ app.post('/music', function (req, res) {
     var thumb = req.body.thumb;
     var title = req.body.title;
     var obj = require("./popularsongs.json");
-
-    var vaild = true;
-    obj.items.forEach(item => {
-        if(item.id == id){
-            valid = false;
-        }
-    });
-    if(valid){
     newitem = {id: id, thumb:thumb, title:title};
     obj.items.push(newitem);
     string = JSON.stringify(obj);
     fs.writeFile('./popularsongs.json', string, function (err) {if (err) return console.log(err);});
     return res.send('{"message":"song added"}');
-    } else{
-        return res.send('{"message":"song already in list"}');
-    }
 });
