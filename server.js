@@ -32,7 +32,7 @@ app.post('/music', function (req, res) {
 
     var vaild = true;
     obj.items.forEach(item => {
-        if(item.id = id){
+        if(item.id == id){
             valid = false;
         }
     });
