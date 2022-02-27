@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const compression = require('compression');
 const bodyParser = require('body-parser');
 
+app.use(cors());
 app.use(express.json());
 app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
