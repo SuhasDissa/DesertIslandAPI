@@ -19,7 +19,7 @@ app.get('/', async function(req, res) {
 
 app.get('/music', async function(req, res) {
     res.type('application/json');
-    res.sendFile(process.cwd() +"/popularsongs.json");
+    res.sendFile(process.cwd() +"/popularsongs.json",{status: 'good'});
 });
 
 /*
