@@ -28,23 +28,21 @@ app.post('/music', function (req, res) {
     var id = req.body.id;
     var thumb = req.body.thumb;
     var title = req.body.title;
-
     var obj = require("./popularsongs.json");
+
+    var vaild = true;
+    obj.items.forEach(item => {
+        if(item.id = id){
+            valid = false;
+        }
+    });
+    if(valid){
     newitem = {id: id, thumb:thumb, title:title};
     obj.items.push(newitem);
-
     string = JSON.stringify(obj);
     fs.writeFile('./popularsongs.json', string, function (err) {if (err) return console.log(err);});
-    return res.send('{"message":"post success"}');
-});
-/*
-app.get('/', async function(req, res) {
-    let name = req.query.name;
-    if(name){
-
-    res.send(name);
-
-    }else{
-      res.status(404).send('Not Found');
+    return res.send('{"message":"song added"}');
+    } else{
+        return res.send('{"message":"song already in list"}');
     }
-});*/
+});
