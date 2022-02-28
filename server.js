@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const compression = require('compression');
 const bodyParser = require('body-parser');
-const { MongoClient} = require('mongoose');
+const { MongoClient} = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
