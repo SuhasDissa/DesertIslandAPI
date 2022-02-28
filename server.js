@@ -16,7 +16,7 @@ const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port)
 });
 
-const client = new MongoClient(process.env.MONGO_URL, { useFindAndModify: true, useUnifiedTopology: true, useNewUrlParser: true });
+const client = new MongoClient(process.env.MONGO_URL, { useUnifiedTopology: true, useNewUrlParser: true });
 app.get('/', async function (req, res) {
     res.redirect("https://suhasdissa.github.io/DesertIsland");
 });
