@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const compression = require('compression');
 const bodyParser = require('body-parser');
-const { MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
@@ -26,10 +26,13 @@ app.get('/music', async function (req, res) {
         if (err) return console.log("Error: ", err);
         const collection = client.db("desertisland").collection("music");
         collection.find({}).toArray(function (err, result) {
-            if (err) throw err;
+            if (err) {
+                res.status(400).send("Error fetching listings!");
+            } else {
+                res.json(result);
+            }
             console.log(result);
-            res.send(result);
-            db.close();
+            client.close();
         });
     });
 });
@@ -42,11 +45,13 @@ app.post('/music', function (req, res) {
         if (err) return console.log("Error: ", err);
         const collection = client.db("desertisland").collection("music");
         collection.insertOne(newitem, function (err, res) {
-            if (err) throw err;
-            console.log("1 document inserted");
+            if (err) {
+                res.status(400).send("Error Updating listings!");
+            } else {
+                res.send('{"message":"song added"}');
+            }
             client.close();
 
         });
     });
-    return res.send('{"message":"song added"}');
 });
