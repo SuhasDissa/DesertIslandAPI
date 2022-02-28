@@ -44,7 +44,7 @@ app.post('/music', function (req, res) {
     client.connect(err => {
         if (err) return console.log("Error: ", err);
         const collection = client.db("desertisland").collection("music");
-        collection.insertOne(newitem, function (err, res) {
+        collection.insertOne(newitem, function (err, response) {
             if (err) {
                 res.status(400).send("Error Updating listings!");
             } else {
