@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const compression = require('compression');
 const bodyParser = require('body-parser');
-var fs = require("fs");
+const { MongoClient} = require('mongoose');
 
 app.use(cors());
 app.use(express.json());
@@ -16,22 +16,37 @@ const listener = app.listen(process.env.PORT || 3000, () => {
     console.log('App is listening on port ' + listener.address().port)
 });
 
-app.get('/', async function(req, res) {
+const client = new MongoClient(process.env.MONGO_URL, { useFindAndModify: true, useUnifiedTopology: true, useNewUrlParser: true });
+app.get('/', async function (req, res) {
     res.redirect("https://suhasdissa.github.io/DesertIsland");
 });
 
-app.get('/music', async function(req, res) {
-    res.type('application/json');
-    res.sendFile(process.cwd() +"/popularsongs.json",{status: 'good'});
+app.get('/music', async function (req, res) {
+    client.connect(err => {
+        if (err) return console.log("Error: ", err);
+        const collection = client.db("desertisland").collection("music");
+        collection.find({}).toArray(function (err, result) {
+            if (err) throw err;
+            console.log(result);
+            res.send(result);
+            db.close();
+        });
+    });
 });
 app.post('/music', function (req, res) {
     var id = req.body.id;
     var thumb = req.body.thumb;
     var title = req.body.title;
-    var obj = require("./popularsongs.json");
-    newitem = {id: id, thumb:thumb, title:title};
-    obj.items.push(newitem);
-    string = JSON.stringify(obj);
-    fs.writeFile('./popularsongs.json', string, function (err) {if (err) return console.log(err);});
+    newitem = { id: id, thumb: thumb, title: title };
+    client.connect(err => {
+        if (err) return console.log("Error: ", err);
+        const collection = client.db("desertisland").collection("music");
+        collection.insertOne(newitem, function (err, res) {
+            if (err) throw err;
+            console.log("1 document inserted");
+            client.close();
+
+        });
+    });
     return res.send('{"message":"song added"}');
 });
