@@ -44,13 +44,15 @@ app.get('/posts', async function(req, res) {
     });
 });
 app.post('/post', function(req, res) {
-    var id = req.body.id;
-    var thumb = req.body.thumb;
-    var title = req.body.title;
+    var username = req.body.username;
+    var topic = req.body.topic;
+    var content = req.body.content;
+    var password = req.body.password;
     newitem = {
-        id: id,
-        thumb: thumb,
-        title: title
+        username: username,
+        topic: topic,
+        content: content,
+        password: password
     };
     client.connect(err => {
         if (err) return console.log("Error: ", err);
