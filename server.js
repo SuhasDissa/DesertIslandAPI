@@ -44,16 +44,7 @@ app.get('/posts', async function(req, res) {
     });
 });
 app.post('/post', function(req, res) {
-    var username = req.body.username;
-    var topic = req.body.topic;
-    var content = req.body.content;
-    var password = req.body.password;
-    newitem = {
-        username: username,
-        topic: topic,
-        content: content,
-        password: password
-    };
+    newitem = req.body;
     client.connect(err => {
         if (err) return console.log("Error: ", err);
         const collection = client.db("desertisland").collection("posts");
