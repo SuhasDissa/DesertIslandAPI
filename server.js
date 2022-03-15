@@ -25,8 +25,8 @@ const client = new MongoClient(process.env.MONGO_URL, {
     useNewUrlParser: true
 });
 app.get('/', async function(req, res) {
-    if (req.collection) {
-        collectionName = req.collection;
+    if (req.headers.collection) {
+        collectionName = req.headers.collection;
         client.connect(err => {
             if (err) return console.log("Error: ", err);
             const collection = client.db("desertisland").collection(collectionName);
@@ -46,8 +46,8 @@ app.get('/', async function(req, res) {
 });
 app.post('/', function(req, res) {
     newitem = req.body;
-    if (req.collection) {
-        collectionName = req.collection;
+    if (req.headers.collection) {
+        collectionName = req.headers.collection;
         client.connect(err => {
             if (err) return console.log("Error: ", err);
             const collection = client.db("desertisland").collection(collectionName);
