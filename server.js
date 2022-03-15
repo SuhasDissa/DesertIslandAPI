@@ -25,37 +25,43 @@ const client = new MongoClient(process.env.MONGO_URL, {
     useNewUrlParser: true
 });
 app.get('/', async function(req, res) {
-    res.redirect("https://pirateisland.glitch.me");
-});
-
-app.get('/posts', async function(req, res) {
-    client.connect(err => {
-        if (err) return console.log("Error: ", err);
-        const collection = client.db("desertisland").collection("posts");
-        collection.find({}).toArray(function(err, result) {
-            if (err) {
-                res.status(400).send("Error fetching listings!");
-            } else {
-                res.json(result);
-            }
-            console.log(result);
-            client.close();
+    if (req.collection) {
+        collectionName = req.collection;
+        client.connect(err => {
+            if (err) return console.log("Error: ", err);
+            const collection = client.db("desertisland").collection(collectionName);
+            collection.find({}).toArray(function(err, result) {
+                if (err) {
+                    res.status(400).send("Error fetching listings!");
+                } else {
+                    res.json(result);
+                }
+                console.log(result);
+                client.close();
+            });
         });
-    });
+    } else {
+        res.redirect("https://pirateisland.glitch.me");
+    }
 });
-app.post('/post', function(req, res) {
+app.post('/', function(req, res) {
     newitem = req.body;
-    client.connect(err => {
-        if (err) return console.log("Error: ", err);
-        const collection = client.db("desertisland").collection("posts");
-        collection.insertOne(newitem, function(err, response) {
-            if (err) {
-                res.status(400).send("Error Updating listings!");
-            } else {
-                res.send('{"message":"post added"}');
-            }
-            client.close();
+    if (req.collection) {
+        collectionName = req.collection;
+        client.connect(err => {
+            if (err) return console.log("Error: ", err);
+            const collection = client.db("desertisland").collection(collectionName);
+            collection.insertOne(newitem, function(err, response) {
+                if (err) {
+                    res.status(400).send("Error Updating listings!");
+                } else {
+                    res.send('{"message":"post added"}');
+                }
+                client.close();
 
+            });
         });
-    });
+    } else {
+        res.status(404).send("Error!");
+    }
 });
