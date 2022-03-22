@@ -65,3 +65,26 @@ app.post('/', function(req, res) {
         res.status(404).send("Error!");
     }
 });
+app.patch('/', function(req, res) {
+    newitem = req.body;
+    if (req.headers.collection) {
+        collectionName = req.headers.collection;
+        client.connect(err => {
+            if (err) return console.log("Error: ", err);
+            const collection = client.db("desertisland").collection(collectionName);
+
+            collection..updateOne({ _id:new ObjectId(req.headers.id) },newitem, function(err, response) {
+
+                if (err) {
+                    res.status(400).send(err);
+                } else {
+                    res.send('{"message":"post added"}');
+                }
+                client.close();
+
+            });
+        });
+    } else {
+        res.status(404).send("Error!");
+    }
+});
