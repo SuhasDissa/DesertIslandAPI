@@ -8,7 +8,6 @@ const {
 
 app.use(cors());
 app.use(express.json());
-app.use();
 app.use(bodyParser.urlencoded({
     extended: false
 }));
