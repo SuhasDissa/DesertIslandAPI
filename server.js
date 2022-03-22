@@ -70,7 +70,7 @@ app.patch('/', function(req, res) {
             if (err) return console.log("Error: ", err);
             const collection = client.db("desertisland").collection(collectionName);
 
-            collection.updateOne({ _id:new ObjectId(req.headers.id) },newitem, function(err, response) {
+            collection.updateOne({ _id:new ObjectId(req.headers.id) },{$set: newitem},{ upsert: true }, function(err, response) {
 
                 if (err) {
                     res.status(400).send(err);
