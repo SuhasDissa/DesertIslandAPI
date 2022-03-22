@@ -1,15 +1,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const compression = require('compression');
 const bodyParser = require('body-parser');
 const {
-    MongoClient
+    MongoClient, ObjectId
 } = require('mongodb');
 
 app.use(cors());
 app.use(express.json());
-app.use(compression());
+app.use();
 app.use(bodyParser.urlencoded({
     extended: false
 }));
@@ -36,7 +35,6 @@ app.get('/', async function(req, res) {
                 } else {
                     res.json(result);
                 }
-                console.log(result);
                 client.close();
             });
         });
